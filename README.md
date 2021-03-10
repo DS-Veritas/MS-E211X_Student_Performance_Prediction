@@ -2,20 +2,15 @@
 A project for the course Multivariate Statistical Analysis (MS-E2112) to predict students' performance in the final exam, based on a number of variables with respect to each student. 
 
 ### Documents
-[Final Report](Final_Report_Project_Football_Result.pdf)
+[Final Report](Final_Project_Report.pdf)
 
 ### Motivation
-Football is more of a business now than it has ever been. There is an unprecedented influx of money into football business and clubs are trying so hard to win the game, stay
-at the top of the league to ensure the popularity and the money comes from it. And this phenomenon has paved a way for data analytics to play an important part in football
-industry to increase the winning possibility. The advance of new technology over the past years allowed us to collect new types (such as, player’s running distance
-through GPS technology) and large amount of data per game. And the emergence of new Machine Learning techniques and tools made it possible to analyze those data with better predictive performance. Now we can develop better models that enable us to predict even the outcome of a match and the final score. 
+Evolution in data analyzing technology naturally led to the active analysis of the student performance in educational research. Early prediction of student performance can be helpful for both educators and students. For example, it can allow educators to help students to achieve challenging goals and to take corrective measures for students, who are lagging behind, to mitigate their risk of failure. For this reason, the students’ performance dataset is selected and the research will focus on identifying the significant factors on students’ performance and presenting good models for the prediction. 
 
-### Objectives
-The objective of this project is to explore different existing machine learning techniques to predict two football game outcomes: Full Time Goals and whether the game will be
-interesting or not (final goal difference is more or equal to 3 goals), by exploiting the results data of the Premier league in seasons 2016, 2017 and 2018.
+### Research Questions
+- What are the predictors significantly affecting students’ performance
+- How can we predict the student’s academic performance based on these predictors?
+- How accurate can we predict the outcome with the regression models? 
 
 ### Data Description
-The data was distributed by Football-Data.co.uk. 
-- football train x: contains 798 observations and 13 columns as features.
-- football train y: contains the labels “FTG" (full time goal which is the total number of goals in the whole match) that you will need for the regression task and “Interest" for classification for these 798 observations.
-- football test x and football test y sets have the same respective structure and contain 342 observations.
+The data was obtained from the UC Irvine Machine Learning database. The data approach student achievement in secondary education of two Portuguese schools: Gabriel Pereira HS and Mousinho da Silveira HS. The data attributes include student grades, demographic, social and school related features and it was collected by using school reports and questionnaires. The questionnaires were answered by 788 students, in total, and 111 answers were discarded due to lack of identification to merge with the mark reports. The data was then integrated into two different datasets: Mathematics (mat) with 395 observations and Portuguese language (por) with 649 observations.
