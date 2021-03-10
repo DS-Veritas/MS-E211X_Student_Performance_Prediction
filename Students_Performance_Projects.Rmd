@@ -1,0 +1,111 @@
+---
+title: "Students_Performance_Project"
+author: "Jeheon Kim"
+date: "4/4/2020"
+output: html_document
+---
+```{R}
+install.packages("GGally")
+library(GGally)
+library(ggplot2)
+```
+
+```{R}
+student.mat <- read.csv("student-mat.csv",sep=";")
+student.por <- read.csv("student-por.csv",sep=";")
+ggpairs(student.mat)
+head(student.mat)
+```
+
+```{R}
+# Linear Model 
+# For determining the best linear model, we will use student.mat as a training set 
+# and student.por as a test set.
+train <- student.mat
+test <- student.por
+
+# Let’s fit a linear model to all of the variables. 
+# The saturated model will overfit the data, but it will provide a control 
+# that can be used to test against.
+fit <- lm(G3 ~ ., train)
+summary(fit)
+```
+```{R} 
+# From the above summary of the linear fit model, we can see that most significant
+# predictors are as following in order of importance, 
+# G2 -> G1 -> Absences -> Famrel (quality of family relationships) -> 
+# Asterisks mark aside p value define significance of value, lower the value have high significance
+# Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+subs <- regsubsets(G3 ~ ., data = train)
+df <- data.frame(est = c(summary(subs)$adjr2, 
+                         summary(subs)$cp,
+                         summary(subs)$bic),
+                 x = rep(1:8, 33),
+                 type = rep(c("adjr2", "cp", "bic"), 
+                            each = 8))
+qplot(x, est, data = df, geom = "line") +
+      theme_bw() + facet_grid(type ~ ., scales = "free_y")
+```
+
+```{R}
+fit <- lm(formula = G3 ~ ., data = train)
+summary(fit)
+```
+```{R}
+model1 <- lm(G3~ G1 + G2 + absences + famrel + age, data = train)
+model2 <- lm(G3~ G1 + G2 + absences + famrel + activities, data = train)
+anova(fit, model1, model2)
+```
+```{R}
+control.model <- lm(G3 ~ ., data = test)
+control.graph <- qplot(G3, predict(control.model), data = test, geom = "point", 
+                       position = "jitter", alpha=.5, main="Saturated Model with all predictors") + 
+                       geom_abline(intercept=0, slope=1) +
+                       theme(legend.position="none")
+#Final Model
+final.model <- lm(G3~ G1 + G2 + absences + famrel + age, data = test)
+final.graph <- qplot(G3, predict(final.model), data = test, geom = "point", 
+                     position = "jitter", alpha=.5, main="Final Model with 5 most significant predictors", guide=FALSE) + 
+                     geom_abline(intercept=0, slope=1) +
+                     theme(legend.position="none")
+
+grid.arrange(control.graph,final.graph,nrow=2)
+```
+```{R}
+plot(final.model)
+```
+
+```{R}
+score0 <- subset(student.por, G3==0)
+score0
+View(score0)
+```
+
+```{R}
+#Final Model
+test <- subset(train, G3!=0)
+final.model.no0 <- lm(G3~ G1 + G2 + absences + famrel + age, data = test)
+final.graph <- qplot(G3, predict(final.model.no0), data = test, geom = "point", 
+                     position = "jitter", alpha=.5, main="Final Model", guide=FALSE) + 
+                     geom_abline(intercept=0, slope=1) +
+                     theme(legend.position="none")
+grid.arrange(control.graph,final.graph,nrow=2)
+```
+```{R}
+par(mfrow=c(2,2))
+plot(final.model.no0)
+```
+
+```{R}
+fit <- lm(G3 ~ failures + goout + sex + romantic, student.mat)
+summary(fit)
+```
+```{R}
+qplot(G3, predict(fit), data = student.mat, geom = "point", position = "jitter", alpha=.8) + 
+     geom_abline(intercept=0, slope=1) +
+     theme(legend.position="none")
+```
+
+```{R}
+plot(fit)
+```
